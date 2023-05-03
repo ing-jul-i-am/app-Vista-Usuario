@@ -1,0 +1,58 @@
+﻿
+<!--En la variable por defecto 'model' se recibe el argumento dsi enviado por el controlador-->
+@model System.Data.DataSet
+@{
+    ViewBag.Title = "Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Usuarios del sistema de infracciones</h2>
+
+<form action="@Url.Action("Usuario", "Usuario")" method="post">
+    <!--Aca es el frame/panel principal-->
+    <div class="panel panel-primary">
+        <!--Este es el header del panel donde esta el boton de busqueda-->
+        <div class="panel-heading">
+            <label>Usuario&nbsp;</label>
+            <input type="text" name="idUsuario" id="idUsuario" placeholder="ID del usuario" style="color:black"/>
+            <button type="submit" style="color:black" class="btn btn-default">Buscar</button>
+            <button type="button" class="btn btn-success">Nuevo</button>
+        </div>
+        <!--Esta es nuestra tabla donde se muestran los resultados-->
+        <table class="table-responsive" border="1" style="color:black" cellpadding="1">
+            <thead>
+                <tr align="center">
+                    <td><b>&nbsp;idUsuario&nbsp;</b></td>
+                    <td><b>&nbsp;nombre&nbsp;</b></td>
+                    <td><b>&nbsp;contraseña&nbsp;</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Aca validamos si el model recibio alguna tabla-->
+                @if (Model.Tables.Count > 0)
+                {
+                    <!--Aca verificamos que la tabla recibid (en la posicion 0 del modelo)-->
+                    <!--tenga al menos una fila de datos.-->
+                    if (Model.Tables[0].Rows.Count > 0)
+                    {  
+                        <!--Aca iteramos por todas las filas de datos de la tabla-->
+                        <!--y por cada fila creamos una nueva fila en nuestro html.-->
+                        for (int x = 0; x < Model.Tables[0].Rows.Count; x++)
+                        {
+                            <tr align="center">
+                                <td class="active">@Model.Tables[0].Rows[x]["idUsuario"].ToString()</td>
+                                <td class="active">@Model.Tables[0].Rows[x]["nombre"].ToString()</td>
+                                <td class="active">@Model.Tables[0].Rows[x]["contrasena"].ToString()</td>
+                                <td><button type="button" class="btn btn-warning">Actualizar</button></td>
+                                <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
