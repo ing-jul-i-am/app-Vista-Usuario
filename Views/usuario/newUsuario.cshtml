@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "newUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Pagina de registro  de usuarios</h2>
+
+<form action="/Usuario/Guardar" method="post">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <label>Nuevo Usuario&nbsp;</label>
+            <button onclick="location.href = '@Url.Action("Usuario", "Usuario")'; return false;" class="btn btn-success">&nbsp;Regresar</button>
+        </div>
+        <div class="col" align="center">
+            <div class="form-group">
+                <label>Codigo del Usuario</label>
+                <input type="text" required class="form-control" id="idUsuario" name="idUsuario" />
+            </div>
+        </div>
+        <div class="col" align="center">
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" required class="form-control" id="nombre" name="nombre" />
+            </div>
+        </div>
+        <div class="col" align="center">
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="text" required class="form-control" id="contrasena" name="contrasena" />
+            </div>
+        </div>
+
+        <div class="col" align="center">
+            <button type="submit" class="btn btn-primary" align="center">Guardar</button>
+        </div>
+        
+    </div>
+</form>

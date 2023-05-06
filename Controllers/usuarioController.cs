@@ -5,8 +5,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using static app_Vista_Usuario.Models.csEstructuraUsuario;
 
 namespace app_Vista_Usuario.Controllers
 {
@@ -65,6 +67,43 @@ namespace app_Vista_Usuario.Controllers
             }
 
             return View(dsi);
+        }
+
+        public ActionResult newUsuario()
+        {
+            return View();
+        }
+
+        public ActionResult Guardar(FormCollection formCollection)
+        {
+            string json, resultJson;
+            Byte[] reqString, resByte;
+            requestUsuario insertar = new requestUsuario();
+            insertar.idUsuario = Convert.ToInt32(formCollection["idUsuario"]);
+            insertar.nombre = formCollection["nombre"];
+            insertar.contrasena = formCollection["contrasena"];
+
+            json = JsonConvert.SerializeObject(insertar);
+
+            WebClient webClient = new WebClient();
+            string url = $"http://localhost/API-USUARIO/rest/api/insertarUsuario";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            webClient.Headers["content-type"] = "application/json";
+            reqString = Encoding.UTF8.GetBytes(json);
+            resByte = webClient.UploadData(request.Address.ToString(), "post", reqString);
+            resultJson = Encoding.UTF8.GetString(resByte);
+
+            responseUsuario result = new responseUsuario();
+            result = JsonConvert.DeserializeObject<responseUsuario>(resultJson);
+            webClient.Dispose();
+
+            if (result.respuesta == 1)
+            {
+                return RedirectToAction("Usuario", "Usuario");
+            }
+            return RedirectToAction("newUsuario", "Usuario");
         }
     }
 }
