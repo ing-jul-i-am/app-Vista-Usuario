@@ -1,40 +1,40 @@
-﻿
+﻿@model System.Data.DataSet
 @{
-    ViewBag.Title = "newUsuario";
+    ViewBag.Title = "ActualizarUsuario";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Pagina de registro  de usuarios</h2>
+<h2>Actualizar Usuario</h2>
 
-<form action="/Usuario/Guardar" method="post">
+<form action="/Usuario/Actualizar" method="post">
 
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <label>Nuevo Usuario&nbsp;</label>
+            <label>Actualizar Usuario&nbsp;</label>
             <button onclick="location.href = '@Url.Action("Usuario", "Usuario")'; return false;" class="btn btn-success">&nbsp;Regresar</button>
         </div>
         <div class="col" align="center">
             <div class="form-group">
                 <label>Codigo del Usuario</label>
-                <input type="number" required class="form-control" id="idUsuario" name="idUsuario" />
+                <input value="@Model.Tables[0].Rows[0]["idUsuario"].ToString()" type="number" required class="form-control" id="idUsuario" name="idUsuario" />
             </div>
         </div>
         <div class="col" align="center">
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" required class="form-control" id="nombre" name="nombre" />
+                <input value="@Model.Tables[0].Rows[0]["nombre"].ToString()" type="text" required class="form-control" id="nombre" name="nombre" />
             </div>
         </div>
         <div class="col" align="center">
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="text" required class="form-control" id="contrasena" name="contrasena" />
+                <input value="@Model.Tables[0].Rows[0]["contrasena"].ToString()" type="text" required class="form-control" id="contrasena" name="contrasena" />
             </div>
         </div>
 
         <div class="col" align="center">
             <button type="submit" class="btn btn-primary" align="center" onclick="validarGuardado();">Guardar</button>
         </div>
-        
+
     </div>
 </form>
