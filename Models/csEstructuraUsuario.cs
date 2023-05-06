@@ -20,7 +20,7 @@ namespace app_Vista_Usuario.Models
             public string descriptionRespuest { get; set; }
         }
 
-        public class requestEliminarArticulo
+        public class requestEliminarUsuario
         {
             public int idUsuario { get; set; }
         }

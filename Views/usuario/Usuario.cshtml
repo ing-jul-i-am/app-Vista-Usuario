@@ -46,7 +46,7 @@
                                 <td class="active">@Model.Tables[0].Rows[x]["nombre"].ToString()</td>
                                 <td class="active">@Model.Tables[0].Rows[x]["contrasena"].ToString()</td>
                                 <td><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("ActualizarUsuario", "Usuario", new { idUsuario = Model.Tables[0].Rows[x]["idUsuario"].ToString()})'; return false;">Actualizar</button></td>
-                                <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+                                <td><button type="button" class="btn btn-danger" onclik="location.href = '@Url.Action("Eliminar", "Usuario", new { idUsuario = Model.Tables[0].Rows[x]["idUsuario"].ToString() })'; return false;">Eliminar</button></td>
                             </tr>
                         }
                     }

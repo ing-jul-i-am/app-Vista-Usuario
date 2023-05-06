@@ -187,5 +187,33 @@ namespace app_Vista_Usuario.Controllers
             }
             return RedirectToAction("ActualizarUsuario", "Usuario");
         }
+
+        public ActionResult Eliminar(string idUsuario)
+        {
+            string json, resultJson;
+            Byte[] reqString, resByte;
+            
+            WebClient webClient = new WebClient();
+            string url = $"http://JULIAN/API-USUARIO/rest/api/eliminarUsuario";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+
+            requestEliminarUsuario eliminar = new requestEliminarUsuario();
+            eliminar.idUsuario = Convert.ToInt32(idUsuario);
+
+            json = JsonConvert.SerializeObject(eliminar);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            webClient.Headers["content-type"] = "application/json";
+            reqString = Encoding.UTF8.GetBytes(json);
+            resByte = webClient.UploadData(request.Address.ToString(), "post", reqString);
+            resultJson = Encoding.UTF8.GetString(resByte);
+
+            responseUsuario result = new responseUsuario();
+            result = JsonConvert.DeserializeObject<responseUsuario>(resultJson);
+            webClient.Dispose();
+
+            return RedirectToAction("Usuario", "Usuario");
+                        
+        }
     }
 }
