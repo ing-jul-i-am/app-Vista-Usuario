@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
 using static app_Vista_Usuario.Models.csEstructuraUsuario;
 
 namespace app_Vista_Usuario.Controllers
@@ -188,7 +189,7 @@ namespace app_Vista_Usuario.Controllers
             return RedirectToAction("ActualizarUsuario", "Usuario");
         }
 
-        public ActionResult Eliminar(string idUsuario)
+        public ActionResult EliminarUsuario(string idUsuario)
         {
             string json, resultJson;
             Byte[] reqString, resByte;
@@ -204,6 +205,7 @@ namespace app_Vista_Usuario.Controllers
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             webClient.Headers["content-type"] = "application/json";
+
             reqString = Encoding.UTF8.GetBytes(json);
             resByte = webClient.UploadData(request.Address.ToString(), "post", reqString);
             resultJson = Encoding.UTF8.GetString(resByte);
@@ -212,6 +214,7 @@ namespace app_Vista_Usuario.Controllers
             result = JsonConvert.DeserializeObject<responseUsuario>(resultJson);
             webClient.Dispose();
 
+            MessageBox.Show(result.descriptionRespuest);
             return RedirectToAction("Usuario", "Usuario");
                         
         }
