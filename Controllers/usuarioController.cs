@@ -214,7 +214,6 @@ namespace app_Vista_Usuario.Controllers
             result = JsonConvert.DeserializeObject<responseUsuario>(resultJson);
             webClient.Dispose();
 
-            MessageBox.Show(result.descriptionRespuest);
             return RedirectToAction("Usuario", "Usuario");
                         
         }
