@@ -17,6 +17,7 @@
             <input type="text" name="idUsuario" id="idUsuario" placeholder="ID del usuario" style="color:black"/>
             <button type="submit" style="color:black" class="btn btn-default">Buscar</button>
             <button onclick="location.href = '@Url.Action("newUsuario", "Usuario")'; return false;" type="button" class="btn btn-success">&nbsp;Nuevo</button>
+            <button onclick="location.href = '@Url.Action("Reporte", "Usuario")'; return false;" class="btn btn-danger">Reporte</button>
         </div>
         <!--Esta es nuestra tabla donde se muestran los resultados-->
         <table class="table-responsive" border="1" style="color:black" cellpadding="1">

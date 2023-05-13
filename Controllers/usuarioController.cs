@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using app_Vista_Usuario.Models;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -216,6 +220,82 @@ namespace app_Vista_Usuario.Controllers
 
             return RedirectToAction("Usuario", "Usuario");
                         
+        }
+
+        //Este es el codigo para generar el reporte y enviarlo al usuario como PDF.
+        public ActionResult Reporte()
+        {
+            //Se llama al metodo Usuario de esta misma clase
+            //Este metodo devuelve un string con todo lo que manda el API
+            DataTable dsiTable = new DataTable();
+            DataSet dsi = GetListaDeUsuarios();
+            dsiTable = dsi.Tables[0];
+
+            //Creamos el objeto de la clase reporte
+            ReportClass reporte = new ReportClass();
+
+            //Le decimos que reporte ser:
+            reporte.FileName = Server.MapPath("/Reports/rptListarUsuarios.rpt");
+            reporte.Load();
+
+            //Le decimos con que datos llenar el reporte
+            reporte.SetDataSource(dsiTable);
+
+            //Creamos el PDF
+            Stream stream = reporte.ExportToStream(ExportFormatType.PortableDocFormat);
+
+            //Se cierra el reporte
+            reporte.Dispose();
+            reporte.Close();
+
+            //retornamos el PDF
+            return new FileStreamResult(stream, "application/pdf");
+        }
+
+        //Este es el codigo para hacer la peticion a la API de los usuarios
+        //y guardarlos en un data set
+        public DataSet GetListaDeUsuarios()
+        {
+            DataSet dsi=new DataSet();
+            string url;
+
+            url = $"http://JULIAN/API-USUARIO/rest/api/listarUsuarios";
+
+            
+
+            //La variable que guarda la peticion al API
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            //Aqui se pedirian los permisos y autenticacion con la API
+            request.Accept = "application/json";
+
+            string responseBody=null;
+
+            //Aqui se ejecuta la peticion a la API que nos devuelve un json
+            //inicialmente lo guardamos en el string 'responseBody'
+            //y por ultimo lo convertimos en un dataset 'dsi' ya que tiene la estructura json
+            try
+            {
+                using (WebResponse response = request.GetResponse())
+                {
+                    
+                    using (Stream strReader = response.GetResponseStream())
+                    {
+                        using (StreamReader objReader = new StreamReader(strReader))
+                        {
+                            responseBody = objReader.ReadToEnd();
+                        }
+                    }
+                    dsi = JsonConvert.DeserializeObject<DataSet>(responseBody);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dsi;
         }
     }
 }
